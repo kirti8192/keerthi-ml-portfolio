@@ -4,7 +4,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 LANG_SRC = "en"
-LANG_TGT = "ta"
+LANG_TGT = "bn"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 DATA_DIR = PROJECT_ROOT / "data"
