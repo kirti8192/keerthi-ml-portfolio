@@ -1,3 +1,1 @@
-"""Generate translations for provided English sentences."""
-
-
+"""Generate translations for provided source sentences (English→Tamil example)."""

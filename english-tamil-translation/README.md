@@ -1,3 +1,3 @@
-# English-Tamil Translation
+# Neural Machine Translation (source → target)
 
-Scaffold for experimenting with English→Tamil translation using RNN+attention, CNN+RNN encoders, and a tiny transformer, built to learn by doing with reproducible PyTorch workflows.
+Generic NMT scaffold intended for source→target language pairs, with English→Tamil as the showcase instance. Includes slots for RNN+attention, CNN+RNN encoders, and a tiny transformer, all wired for reproducible PyTorch workflows.

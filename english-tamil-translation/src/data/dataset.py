@@ -1,5 +1,3 @@
-"""PyTorch Dataset and DataLoader utilities for English-Tamil translation."""
+"""PyTorch Dataset/DataLoader utilities for source→target NMT (English→Tamil example)."""
 
 # Placeholder for dataset implementations.
-
-
