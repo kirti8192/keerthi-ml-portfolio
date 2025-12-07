@@ -23,6 +23,7 @@ import config
 from download_dataset import download_dataset
 from preprocess_dataset import preprocess_dataset
 from construct_vocab import construct_vocab
+from numericalize import numericalize
 
 # %%
 print(f"Preparing data for language pair: {config.LANG_PAIR}")
@@ -55,3 +56,12 @@ else:
     print(f"Vocabulary already exists at {config.VOCAB_DIR}, skipping vocab construction.")
 
 print("\nData preparation complete.")
+
+# %%
+# numericalization
+if not config.DATA_NUM.exists():
+    print("\n--- Numericalization stage ---")
+    print(f"Numericalizing dataset into {config.DATA_NUM}...")
+    numericalize()
+else:
+    print(f"Numericalized data already exists at {config.DATA_NUM}, skipping numericalization.")

@@ -1,6 +1,4 @@
 .venv
 __pycache__/
 *.pyc
-translation_models/data/raw/
-translation_models/data/processed/
-translation_models/data/vocab/
+translation_models/data/
