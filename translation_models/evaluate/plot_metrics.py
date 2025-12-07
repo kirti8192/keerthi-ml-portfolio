@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 
 import config
 
+# %%
+from pathlib import Path
+import sys, os
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 def load_loss_history(metrics_path: Path):
     if not metrics_path.exists():

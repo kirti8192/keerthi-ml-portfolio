@@ -31,7 +31,7 @@ CHECKPOINTS_ROOT = Path(os.environ.get("NMT_CHECKPOINTS_ROOT", PROJECT_ROOT / "c
 # Tamil (ta) and
 # Telugu (te).
 LANG_SRC = "en"
-LANG_TGT = "bn"
+LANG_TGT = "ta"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # Data directories
@@ -76,8 +76,8 @@ DEBUG_MAX_SAMPLES = 64
 DEBUG_MODE = True
 
 # model hyperparams
-EMBED_DIM = 128
-HIDDEN_DIM = 256
+EMBED_DIM = 256
+HIDDEN_DIM = 512
 NUM_LAYERS = 1
 DROPOUT = 0.1
 
