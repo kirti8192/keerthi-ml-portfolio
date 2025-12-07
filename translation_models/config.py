@@ -21,7 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 # Tamil (ta) and
 # Telugu (te).
 LANG_SRC = "en"
-LANG_TGT = "ta"
+LANG_TGT = "bn"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # Data directories
@@ -51,3 +51,8 @@ EOS_ID = 3
 
 # vocab params
 MIN_FREQ = 10
+
+# dataloader params
+BATCH_SIZE = 64
+NUM_WORKERS = 2
+PIN_MEMORY = True

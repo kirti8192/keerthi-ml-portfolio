@@ -55,8 +55,6 @@ if not config.VOCAB_DIR.exists():
 else:
     print(f"Vocabulary already exists at {config.VOCAB_DIR}, skipping vocab construction.")
 
-print("\nData preparation complete.")
-
 # %%
 # numericalization
 if not config.DATA_NUM.exists():
@@ -65,3 +63,6 @@ if not config.DATA_NUM.exists():
     numericalize()
 else:
     print(f"Numericalized data already exists at {config.DATA_NUM}, skipping numericalization.")
+
+# %%
+print("\nData preparation complete.")
