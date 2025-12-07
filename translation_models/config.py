@@ -1,6 +1,7 @@
 """Centralized filesystem paths for the translation project."""
 
 from pathlib import Path
+import os
 import torch
 
 # seed
@@ -8,6 +9,14 @@ SEED = 42
 
 # ROOT
 PROJECT_ROOT = Path(__file__).resolve().parent
+
+# Base directories (override with env vars when running on Colab/remote)
+# e.g., export NMT_DATA_ROOT="/content/drive/MyDrive/nmt_en_te"
+#       export NMT_OUTPUTS_ROOT="/content/drive/MyDrive/nmt_en_te_outputs"
+#       export NMT_CHECKPOINTS_ROOT="/content/drive/MyDrive/nmt_en_te_checkpoints"
+DATA_ROOT = Path(os.environ.get("NMT_DATA_ROOT", PROJECT_ROOT / "data"))
+OUTPUTS_ROOT = Path(os.environ.get("NMT_OUTPUTS_ROOT", PROJECT_ROOT / "outputs"))
+CHECKPOINTS_ROOT = Path(os.environ.get("NMT_CHECKPOINTS_ROOT", PROJECT_ROOT / "checkpoints"))
 
 # Language configuration
 # Assamese (as),
@@ -22,18 +31,17 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 # Tamil (ta) and
 # Telugu (te).
 LANG_SRC = "en"
-LANG_TGT = "ta"
+LANG_TGT = "bn"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # Data directories
-DATA_DIR = PROJECT_ROOT / "data"
-DATA_RAW = DATA_DIR / "raw" / LANG_PAIR
-DATA_PROCESSED = DATA_DIR / "processed" / LANG_PAIR
-VOCAB_DIR = DATA_DIR / "vocab" / LANG_PAIR
-DATA_NUM = DATA_DIR / "numericalized" / LANG_PAIR
-CHECKPOINTS_DIR = PROJECT_ROOT / "checkpoints" / LANG_PAIR
-METRICS_DIR = PROJECT_ROOT / "outputs" / "metrics" / LANG_PAIR
-PLOTS_DIR = PROJECT_ROOT / "outputs" / "plots" / LANG_PAIR
+DATA_RAW = DATA_ROOT / "raw" / LANG_PAIR
+DATA_PROCESSED = DATA_ROOT / "processed" / LANG_PAIR
+VOCAB_DIR = DATA_ROOT / "vocab" / LANG_PAIR
+DATA_NUM = DATA_ROOT / "numericalized" / LANG_PAIR
+CHECKPOINTS_DIR = CHECKPOINTS_ROOT / LANG_PAIR
+METRICS_DIR = OUTPUTS_ROOT / "metrics" / LANG_PAIR
+PLOTS_DIR = OUTPUTS_ROOT / "plots" / LANG_PAIR
 
 # Pre-processing parameters
 MIN_SEQ_LEN = 2

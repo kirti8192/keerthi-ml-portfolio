@@ -27,6 +27,10 @@ from numericalize import numericalize
 
 # %%
 print(f"Preparing data for language pair: {config.LANG_PAIR}")
+print(f"Data root: {config.DATA_ROOT}")
+
+# ensure root exists (useful for Colab Drive mounts)
+config.DATA_ROOT.mkdir(parents=True, exist_ok=True)
 
 # %% 
 # download dataset if not already present
