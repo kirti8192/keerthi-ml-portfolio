@@ -1,19 +1,22 @@
 """
-Plot training metrics stored in config.METRICS_DIR/
-and save the plots to config.PLOTS_DIR/
+Plot training metrics stored in the metrics directory and save figures to a plots directory.
+
+CLI flags:
+  --local (default): use paths from config.py
+  --drive: use a fixed Google Drive root for metrics/plots
 """
 
 from pathlib import Path
-import csv
+import sys
 import os
+import argparse
+import csv
 import matplotlib.pyplot as plt
 
-import config
-
-# %%
-from pathlib import Path
-import sys, os
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+import config  # noqa: E402
+
+
 
 def load_loss_history(metrics_path: Path):
     if not metrics_path.exists():
@@ -49,9 +52,29 @@ def plot_losses(epochs, train_losses, dev_losses, save_path: Path):
     print(f"Saved plot to {save_path}")
 
 
+def resolve_paths(use_drive: bool):
+    if use_drive:
+        drive_root = Path("/Users/kirti8192/Library/CloudStorage/GoogleDrive-kirti8192@gmail.com/My Drive/colab_data/translation_models")
+        metrics_dir = drive_root / "outputs" / "metrics" / config.LANG_PAIR
+        plots_dir = drive_root / "outputs" / "plots" / config.LANG_PAIR
+    else:
+        metrics_dir = config.METRICS_DIR
+        plots_dir = config.PLOTS_DIR
+    return metrics_dir, plots_dir
+
+
 def main():
-    metrics_path = config.METRICS_DIR / "loss_history.csv"
-    plot_path = config.PLOTS_DIR / "loss_curve.png"
+    parser = argparse.ArgumentParser(description="Plot loss curves from saved metrics.")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--local", action="store_true", help="Use local paths from config.py (default).")
+    group.add_argument("--drive", action="store_true", help="Use Google Drive paths for metrics/plots.")
+    args = parser.parse_args()
+
+    use_drive = args.drive
+    metrics_dir, plots_dir = resolve_paths(use_drive)
+
+    metrics_path = metrics_dir / "loss_history.csv"
+    plot_path = plots_dir / "loss_curve.png"
 
     epochs, train_losses, dev_losses = load_loss_history(metrics_path)
     plot_losses(epochs, train_losses, dev_losses, plot_path)
