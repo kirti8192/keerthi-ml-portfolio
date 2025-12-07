@@ -24,6 +24,9 @@ from download_dataset import download_dataset
 from preprocess_dataset import preprocess_dataset
 from construct_vocab import construct_vocab
 
+# %%
+print(f"Preparing data for language pair: {config.LANG_PAIR}")
+
 # %% 
 # download dataset if not already present
 if not config.DATA_RAW.exists():

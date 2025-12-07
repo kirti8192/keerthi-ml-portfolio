@@ -2,6 +2,9 @@
 
 from pathlib import Path
 
+# seed
+SEED = 42
+
 # ROOT
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -31,6 +34,10 @@ VOCAB_DIR = DATA_DIR / "vocab" / LANG_PAIR
 MIN_SEQ_LEN = 2
 MAX_SEQ_LEN = 100
 
+# split params
+TRAIN_SPLIT = 0.9
+VAL_SPLIT = 0.05
+
 # vocab tokens
 PAD_TOKEN = "<PAD>"
 UNK_TOKEN = "<UNK>"
@@ -42,4 +49,4 @@ SOS_ID = 2
 EOS_ID = 3
 
 # vocab params
-MIN_FREQ = 2
+MIN_FREQ = 10

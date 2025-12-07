@@ -5,7 +5,8 @@
 # 2. Normalize text for both languages
 # 3. Tokenize sentences (whitespace tokenization)
 # 4. Remove unusable examples
-# 5. Save the tokenized dataset to disk
+# 5. Split into train/val/test splits
+# 6. Save the tokenized dataset to disk
 
 # %%
 from pathlib import Path
@@ -63,6 +64,33 @@ def _filter_unusable(example):
     return True
 
 # %%
+# split into train/val/test
+def _split_dataset(dataset):
+    """
+    Split dataset into train/val/test splits
+    - Check if splits already exist in dataset
+    """
+    if all(split in dataset.keys() for split in ["train", "validation", "test"]):
+        return dataset
+
+    # otherwise, perform a random split on the DatasetDict
+    dataset = dataset["train"]  # assume all data is in 'train' split
+    dataset = dataset.shuffle(seed=config.SEED)
+    total_size = len(dataset)
+    train_size = int(config.TRAIN_SPLIT * total_size)
+    val_size = int(config.VAL_SPLIT * total_size)
+
+    # create splits and create DatasetDict
+    dataset_split = DatasetDict({
+        "train": dataset.select(range(0, train_size)),
+        "validation": dataset.select(range(train_size, train_size + val_size)),
+        "test": dataset.select(range(train_size + val_size, total_size)),       # put remaining examples in test
+    })
+
+    return dataset_split
+    
+
+# %%
 # save processed dataset to disk
 def _save_dataset(dataset_processed):
     """
@@ -100,6 +128,9 @@ def preprocess_dataset():
         print(f"  Examples before filtering: {pre_filter_len}")
         print(f"  Examples after filtering: {post_filter_len}")
         print(f"  Percentage removed: {100 * (pre_filter_len - post_filter_len) / pre_filter_len:.2f}%")
+
+    # split dataset if needed
+    dataset_processed = _split_dataset(dataset_processed)
 
     # save dataset to disk
     _save_dataset(dataset_processed)

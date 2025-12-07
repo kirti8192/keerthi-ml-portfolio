@@ -27,9 +27,15 @@ def load_dataset():
     """
     return load_from_disk(str(config.DATA_PROCESSED))
 
+# %%
 def build_vocab(tokens, vocab):
     """
-    Build vocabulary from tokens by counting token frequencies.
+    Build vocabulary from tokens
+    - Filter by min frequency
+    - Token to index mapping
+    Input:
+        tokens: List[List[str]] - list of tokenized sentences
+        vocab: Dict[str, int] - existing vocabulary to update
     """
 
     # Use Counter to count token frequencies in flattened list
@@ -37,10 +43,12 @@ def build_vocab(tokens, vocab):
     flattened_tokens = [token for token_list in tokens for token in token_list]
     counter.update(flattened_tokens)
 
-    # filter tokens by min frequency and add to vocab
+    # filter tokens by min frequency and add to vocab with index
+    current_idx = len(vocab)
     for token, freq in counter.items():
         if freq >= config.MIN_FREQ and token not in vocab:
-            vocab[token] = len(vocab)
+            vocab[token] = current_idx
+            current_idx += 1
 
     return vocab
 
@@ -74,7 +82,14 @@ def construct_vocab():
     print(f"Loaded splits: {list(dataset.keys())}")
 
     # initialize vocab with special tokens
-    vocab_src = vocab_tgt = {
+    vocab_src = {
+        config.PAD_TOKEN: config.PAD_ID,
+        config.UNK_TOKEN: config.UNK_ID,
+        config.SOS_TOKEN: config.SOS_ID,
+        config.EOS_TOKEN: config.EOS_ID,
+    }
+
+    vocab_tgt = {
         config.PAD_TOKEN: config.PAD_ID,
         config.UNK_TOKEN: config.UNK_ID,
         config.SOS_TOKEN: config.SOS_ID,
