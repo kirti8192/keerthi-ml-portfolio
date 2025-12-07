@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 translation_models/data/raw/
+translation_models/data/processed/
