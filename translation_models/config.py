@@ -22,7 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 # Tamil (ta) and
 # Telugu (te).
 LANG_SRC = "en"
-LANG_TGT = "bn"
+LANG_TGT = "ta"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # Data directories
@@ -31,10 +31,13 @@ DATA_RAW = DATA_DIR / "raw" / LANG_PAIR
 DATA_PROCESSED = DATA_DIR / "processed" / LANG_PAIR
 VOCAB_DIR = DATA_DIR / "vocab" / LANG_PAIR
 DATA_NUM = DATA_DIR / "numericalized" / LANG_PAIR
+CHECKPOINTS_DIR = PROJECT_ROOT / "checkpoints" / LANG_PAIR
+METRICS_DIR = PROJECT_ROOT / "outputs" / "metrics" / LANG_PAIR
+PLOTS_DIR = PROJECT_ROOT / "outputs" / "plots" / LANG_PAIR
 
 # Pre-processing parameters
 MIN_SEQ_LEN = 2
-MAX_SEQ_LEN = 100
+MAX_SEQ_LEN = 50
 
 # split params
 TRAIN_SPLIT = 0.9
@@ -62,3 +65,15 @@ PIN_MEMORY = True if torch.cuda.is_available() else False
 
 # debug params
 DEBUG_MAX_SAMPLES = 64
+DEBUG_MODE = True
+
+# model hyperparams
+EMBED_DIM = 128
+HIDDEN_DIM = 256
+NUM_LAYERS = 1
+DROPOUT = 0.1
+
+# training hyperparams
+NUM_EPOCHS = 2
+LEARNING_RATE = 1e-3
+TEACHER_FORCING = 1.0  # start with pure teacher forcing
