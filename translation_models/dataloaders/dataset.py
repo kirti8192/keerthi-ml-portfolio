@@ -109,3 +109,20 @@ def make_translation_dataset():
     test_dataset = TranslationDataset(hf_dataset['test'])
 
     return train_dataset, dev_dataset, test_dataset
+
+
+if __name__ == "__main__":
+    # Lightweight script check for dataset wiring
+    train_ds, dev_ds, test_ds = make_translation_dataset()
+    print("Dataset sizes -> train: {}, dev: {}, test: {}".format(len(train_ds), len(dev_ds), len(test_ds)))
+
+    if len(train_ds) > 0:
+        sample = train_ds[0]
+        print("First train sample keys:", sample.keys())
+        print("src_ids:", sample["src_ids"])
+        print("tgt_ids:", sample["tgt_ids"])
+        print("src_len:", sample["src_len"].item(), "tgt_len:", sample["tgt_len"].item())
+    else:
+        print("Train dataset is empty; nothing to preview.")
+
+# %%

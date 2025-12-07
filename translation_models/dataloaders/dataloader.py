@@ -38,12 +38,27 @@ def create_dataloaders(batch_size=config.BATCH_SIZE, num_workers=config.NUM_WORK
 
     # to check for sanity
     if debug:
+
+        max_samples = config.DEBUG_MAX_SAMPLES
+
         # use only a small subset of training data for speed
-        max_samples = 64
         n = min(max_samples, len(train_dataset))
         indices = torch.randperm(len(train_dataset))[:n].tolist()
         train_dataset = Subset(train_dataset, indices)
         print(f"[DEBUG] Using only {n} training examples for fast run.")
+
+        # use only a small subset of dev data for speed
+        n = min(max_samples, len(dev_dataset))
+        indices = torch.randperm(len(dev_dataset))[:n].tolist()
+        dev_dataset = Subset(dev_dataset, indices)
+        print(f"[DEBUG] Using only {n} dev examples for fast run.")
+
+        # use only a small subset of test data for speed
+        n = min(max_samples, len(test_dataset))
+        indices = torch.randperm(len(test_dataset))[:n].tolist()
+        test_dataset = Subset(test_dataset, indices)
+        print(f"[DEBUG] Using only {n} test examples for fast run.")
+
 
     # build dataloaders
     train_loader = DataLoader(
@@ -72,3 +87,19 @@ def create_dataloaders(batch_size=config.BATCH_SIZE, num_workers=config.NUM_WORK
     )
 
     return train_loader, dev_loader, test_loader
+
+
+if __name__ == "__main__":
+    # Quick script check for dataloader wiring
+    train_loader, dev_loader, test_loader = create_dataloaders(batch_size=4, num_workers=0, debug=True)
+    print("Built loaders -> train: {}, dev: {}, test: {}".format(len(train_loader), len(dev_loader), len(test_loader)))
+
+    try:
+        first_batch = next(iter(train_loader))
+        print("First batch shapes:")
+        print("  src_padded:", first_batch["src_padded"].shape)
+        print("  tgt_padded:", first_batch["tgt_padded"].shape)
+        print("  src_lens:", first_batch["src_lens"].shape)
+        print("  tgt_lens:", first_batch["tgt_lens"].shape)
+    except StopIteration:
+        print("Train loader is empty; no batches to preview.")

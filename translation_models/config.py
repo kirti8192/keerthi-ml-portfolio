@@ -1,6 +1,7 @@
 """Centralized filesystem paths for the translation project."""
 
 from pathlib import Path
+import torch
 
 # seed
 SEED = 42
@@ -55,4 +56,9 @@ MIN_FREQ = 10
 # dataloader params
 BATCH_SIZE = 64
 NUM_WORKERS = 2
-PIN_MEMORY = True
+
+# pin_memory True only if CUDA
+PIN_MEMORY = True if torch.cuda.is_available() else False
+
+# debug params
+DEBUG_MAX_SAMPLES = 64
