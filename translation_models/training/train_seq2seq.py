@@ -19,6 +19,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import torch
 import config
 import json
+import csv
 from dataloaders.dataloader import create_dataloaders
 from models.seq2seq import Encoder, Decoder, Seq2Seq
 from training.loop import train_one_epoch, evaluate
@@ -110,6 +111,8 @@ def main():
     print("Starting training...")
 
     best_dev_loss = float("inf")
+    train_history = []
+    dev_history = []
     for epoch in range(config.NUM_EPOCHS):
         print(f"Epoch {epoch+1}/{config.NUM_EPOCHS}")
 
@@ -124,6 +127,7 @@ def main():
         )
 
         print(f"  Train Loss: {train_loss:.4f}")
+        train_history.append(train_loss)
 
         # evaluate on validation set
         dev_loss = evaluate(
@@ -134,12 +138,23 @@ def main():
         )
 
         print(f"  Val Loss: {dev_loss:.4f}")
+        dev_history.append(dev_loss)
 
         # save best model
         if dev_loss < best_dev_loss:
             best_dev_loss = dev_loss
             torch.save(model.state_dict(), checkpoint_path)
             print(f"  Saved best model with Val Loss: {best_dev_loss:.4f}")
+
+    # persist loss history
+    os.makedirs(config.METRICS_DIR, exist_ok=True)
+    metrics_path = config.METRICS_DIR / "loss_history.csv"
+    with open(metrics_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["epoch", "train_loss", "dev_loss"])
+        for idx, (tr, dv) in enumerate(zip(train_history, dev_history), start=1):
+            writer.writerow([idx, tr, dv])
+    print(f"Saved loss history to {metrics_path}")
 
 if __name__ == "__main__":
     main()

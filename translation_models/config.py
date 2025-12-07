@@ -32,6 +32,8 @@ DATA_PROCESSED = DATA_DIR / "processed" / LANG_PAIR
 VOCAB_DIR = DATA_DIR / "vocab" / LANG_PAIR
 DATA_NUM = DATA_DIR / "numericalized" / LANG_PAIR
 CHECKPOINTS_DIR = PROJECT_ROOT / "checkpoints" / LANG_PAIR
+METRICS_DIR = PROJECT_ROOT / "outputs" / "metrics" / LANG_PAIR
+PLOTS_DIR = PROJECT_ROOT / "outputs" / "plots" / LANG_PAIR
 
 # Pre-processing parameters
 MIN_SEQ_LEN = 2
