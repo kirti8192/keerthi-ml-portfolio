@@ -30,3 +30,16 @@ VOCAB_DIR = DATA_DIR / "vocab" / LANG_PAIR
 # Pre-processing parameters
 MIN_SEQ_LEN = 2
 MAX_SEQ_LEN = 100
+
+# vocab tokens
+PAD_TOKEN = "<PAD>"
+UNK_TOKEN = "<UNK>"
+SOS_TOKEN = "<SOS>"
+EOS_TOKEN = "<EOS>"
+PAD_ID = 0
+UNK_ID = 1
+SOS_ID = 2
+EOS_ID = 3
+
+# vocab params
+MIN_FREQ = 2
