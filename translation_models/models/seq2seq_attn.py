@@ -148,7 +148,7 @@ class Decoder(nn.Module):
         self.v = nn.Parameter(torch.rand(hidden_dim))
 
         # Linear layer to project GRU outputs to vocabulary size
-        self.fc_out = nn.Linear(hidden_dim, vocab_size_tgt)
+        self.fc_out = nn.Linear(hidden_dim * 2, vocab_size_tgt)
 
     def forward(
             self,
@@ -159,7 +159,7 @@ class Decoder(nn.Module):
         """
         Forward pass for the Decoder with attention
         Inputs:
-        - encoder_outputs: Tensor [B, T_src, hidden_dim]
+        - enc_out: Tensor [B, T_src, hidden_dim]
         - tgt_step: Tensor [B] (current timestep token ids)
         - hidden: Tensor [num_layers, B, hidden_dim] 
 
