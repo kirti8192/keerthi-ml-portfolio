@@ -39,9 +39,9 @@ DATA_RAW = DATA_ROOT / "raw" / LANG_PAIR
 DATA_PROCESSED = DATA_ROOT / "processed" / LANG_PAIR
 VOCAB_DIR = DATA_ROOT / "vocab" / LANG_PAIR
 DATA_NUM = DATA_ROOT / "numericalized" / LANG_PAIR
-CHECKPOINTS_DIR = CHECKPOINTS_ROOT / LANG_PAIR
-METRICS_DIR = OUTPUTS_ROOT / "metrics" / LANG_PAIR
-PLOTS_DIR = OUTPUTS_ROOT / "plots" / LANG_PAIR
+CHECKPOINTS_DIR = CHECKPOINTS_ROOT / LANG_PAIR / MODEL_NAME
+METRICS_DIR = OUTPUTS_ROOT / "metrics" / LANG_PAIR / MODEL_NAME
+PLOTS_DIR = OUTPUTS_ROOT / "plots" / LANG_PAIR / MODEL_NAME
 
 # Pre-processing parameters
 MIN_SEQ_LEN = 2
@@ -74,17 +74,18 @@ NUM_WORKERS = 2
 PIN_MEMORY = True if torch.cuda.is_available() else False
 
 # debug params
-DEBUG_MAX_SAMPLES = 100000
+DEBUG_MAX_SAMPLES = 64
 DEBUG_MODE = True
 
 # model hyperparams
+MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
 EMBED_DIM = 128
 HIDDEN_DIM = 256
 NUM_LAYERS = 1
 DROPOUT = 0.1
 
 # training hyperparams
-NUM_EPOCHS = 10
+NUM_EPOCHS = 2
 LEARNING_RATE = 1e-3
 TEACHER_FORCING_START = 1.0  # start with pure teacher forcing
 TEACHER_FORCING_END = 0.1    # decay toward this ratio by final epoch

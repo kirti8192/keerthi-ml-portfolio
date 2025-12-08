@@ -21,8 +21,8 @@ import config
 import json
 import csv
 from dataloaders.dataloader import create_dataloaders
-from models.seq2seq import Encoder, Decoder, Seq2Seq
 from training.loop import train_one_epoch, evaluate
+from models import seq2seq, seq2seq_attn
 
 # %%
 def get_device():
@@ -69,10 +69,16 @@ def main():
     train_loader, val_loader, test_loader = create_dataloaders(debug=config.DEBUG_MODE)
     print(f"Train batches: {len(train_loader)}, Val batches: {len(val_loader)}, Test batches: {len(test_loader)}")
 
-    # define model 
-    print("Defining model...")
+    # define model based on config.MODEL_NAME
+    print(f"Defining model: {config.MODEL_NAME}...")
+    if config.MODEL_NAME == "seq2seq":
+        EncoderCls, DecoderCls, Seq2SeqCls = seq2seq.Encoder, seq2seq.Decoder, seq2seq.Seq2Seq
+    elif config.MODEL_NAME == "seq2seq_attn":
+        EncoderCls, DecoderCls, Seq2SeqCls = seq2seq_attn.Encoder, seq2seq_attn.Decoder, seq2seq_attn.Seq2Seq
+    else:
+        raise ValueError(f"Unsupported MODEL_NAME: {config.MODEL_NAME}")
 
-    encoder = Encoder(
+    encoder = EncoderCls(
         vocab_size_src=vocab_size_src,
         embed_dim=config.EMBED_DIM,
         hidden_dim=config.HIDDEN_DIM,
@@ -81,7 +87,7 @@ def main():
         pad_id=config.PAD_ID,
     )
 
-    decoder = Decoder(
+    decoder = DecoderCls(
         vocab_size_tgt=vocab_size_tgt,
         embed_dim=config.EMBED_DIM,
         hidden_dim=config.HIDDEN_DIM,
@@ -90,7 +96,7 @@ def main():
         pad_id=config.PAD_ID,
     )
 
-    model = Seq2Seq(
+    model = Seq2SeqCls(
         encoder=encoder,
         decoder=decoder,
         sos_id=config.SOS_ID,
@@ -105,7 +111,7 @@ def main():
 
     # checkpoint directory
     os.makedirs(config.CHECKPOINTS_DIR, exist_ok=True)
-    checkpoint_path = config.CHECKPOINTS_DIR / "seq2seq_checkpoint.pth"
+    checkpoint_path = config.CHECKPOINTS_DIR / f"{config.MODEL_NAME}_checkpoint.pth"
 
     # training loop
     print("Starting training...")
@@ -157,7 +163,7 @@ def main():
 
     # persist loss history
     os.makedirs(config.METRICS_DIR, exist_ok=True)
-    metrics_path = config.METRICS_DIR / "loss_history.csv"
+    metrics_path = config.METRICS_DIR / f"{config.MODEL_NAME}_loss_history.csv"
     with open(metrics_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["epoch", "train_loss", "dev_loss"])
