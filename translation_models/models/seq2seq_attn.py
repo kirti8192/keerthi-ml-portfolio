@@ -178,7 +178,7 @@ class Decoder(nn.Module):
 
         # Compute attention scores
         decoder_hidden = gru_hidden[-1].unsqueeze(1)        # [B, 1, hidden_dim]
-        repeated_decoder_hidden = decoder_hidden.repeat(-1, enc_out.size(1), -1)  # [B, T_src, hidden_dim]
+        repeated_decoder_hidden = decoder_hidden.repeat(1, enc_out.size(1), 1)  # [B, T_src, hidden_dim]
 
         # Concatenate encoder outputs and decoder hidden state
         attn_input = torch.cat((enc_out, repeated_decoder_hidden), dim=2)  # [B, T_src, hidden_dim*2]
@@ -221,6 +221,17 @@ class Seq2SeqAttn(nn.Module):
     - attn_weights_all: Tensor [B, T_tgt-1, T_src] (optional)
         Attention weights for each timestep (useful for visualization).
     """
+
+    def __init__(
+            self,
+            encoder: Encoder,
+            decoder: Decoder,
+            sos_id: int,
+    ):
+        super().__init__()
+        self.encoder = encoder
+        self.decoder = decoder
+        self.sos_id = sos_id
 
     def forward(
             self,

@@ -74,7 +74,7 @@ def main():
     if config.MODEL_NAME == "seq2seq":
         EncoderCls, DecoderCls, Seq2SeqCls = seq2seq.Encoder, seq2seq.Decoder, seq2seq.Seq2Seq
     elif config.MODEL_NAME == "seq2seq_attn":
-        EncoderCls, DecoderCls, Seq2SeqCls = seq2seq_attn.Encoder, seq2seq_attn.Decoder, seq2seq_attn.Seq2Seq
+        EncoderCls, DecoderCls, Seq2SeqCls = seq2seq_attn.Encoder, seq2seq_attn.Decoder, seq2seq_attn.Seq2SeqAttn
     else:
         raise ValueError(f"Unsupported MODEL_NAME: {config.MODEL_NAME}")
 

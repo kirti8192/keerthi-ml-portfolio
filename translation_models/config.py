@@ -7,6 +7,9 @@ import torch
 # seed
 SEED = 42
 
+# model choice
+MODEL_NAME = "seq2seq_attn"  # choose: "seq2seq", "seq2seq_attn"
+
 # ROOT
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -78,7 +81,6 @@ DEBUG_MAX_SAMPLES = 64
 DEBUG_MODE = True
 
 # model hyperparams
-MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
 EMBED_DIM = 128
 HIDDEN_DIM = 256
 NUM_LAYERS = 1

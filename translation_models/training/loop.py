@@ -38,12 +38,13 @@ def train_one_epoch(
 
         optimizer.zero_grad()
 
-        logits = model(
+        model_output = model(
             src_padded,
             src_lens,
             tgt_padded,
             teacher_forcing_ratio=teacher_forcing_ratio
         )
+        logits = model_output[0] if isinstance(model_output, tuple) else model_output
 
         # Shift targets to align with outputs
         tgt_input = tgt_padded[:, 1:]  # exclude <SOS>
@@ -91,12 +92,13 @@ def evaluate(
             tgt_padded = batch['tgt_padded'].to(device)
             src_lens = batch['src_lens'].to(device)
 
-            logits = model(
+            model_output = model(
                 src_padded,
                 src_lens,
                 tgt_padded,
                 teacher_forcing_ratio=1.0  # teacher forcing during eval
             )
+            logits = model_output[0] if isinstance(model_output, tuple) else model_output
 
             # Shift targets to align with outputs
             tgt_input = tgt_padded[:, 1:]
