@@ -113,8 +113,17 @@ def main():
     best_dev_loss = float("inf")
     train_history = []
     dev_history = []
+    
+    # linearly decay teacher forcing from start to end across epochs
+    tf_schedule = torch.linspace(
+        config.TEACHER_FORCING_START,
+        config.TEACHER_FORCING_END,
+        steps=config.NUM_EPOCHS,
+    ).tolist()
+
     for epoch in range(config.NUM_EPOCHS):
         print(f"Epoch {epoch+1}/{config.NUM_EPOCHS}")
+        teacher_forcing_ratio = tf_schedule[epoch]
 
         # train one epoch
         train_loss = train_one_epoch(
@@ -123,10 +132,10 @@ def main():
             criterion=criterion,
             optimizer=optimizer,
             device=device,
-            teacher_forcing_ratio=config.TEACHER_FORCING,
+            teacher_forcing_ratio=teacher_forcing_ratio,
         )
 
-        print(f"  Train Loss: {train_loss:.4f}")
+        print(f"  Train Loss: {train_loss:.4f} | TF ratio: {teacher_forcing_ratio:.3f}")
         train_history.append(train_loss)
 
         # evaluate on validation set
