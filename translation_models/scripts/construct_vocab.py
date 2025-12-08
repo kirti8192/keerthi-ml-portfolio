@@ -28,7 +28,7 @@ def load_dataset():
     return load_from_disk(str(config.DATA_PROCESSED))
 
 # %%
-def build_vocab(tokens, vocab):
+def build_vocab(tokens, vocab, max_size):
     """
     Build vocabulary from tokens
     - Filter by min frequency
@@ -36,6 +36,7 @@ def build_vocab(tokens, vocab):
     Input:
         tokens: List[List[str]] - list of tokenized sentences
         vocab: Dict[str, int] - existing vocabulary to update
+        max_size: int - maximum size of vocabulary (including specials)
     """
 
     # Use Counter to count token frequencies in flattened list
@@ -43,12 +44,22 @@ def build_vocab(tokens, vocab):
     flattened_tokens = [token for token_list in tokens for token in token_list]
     counter.update(flattened_tokens)
 
-    # filter tokens by min frequency and add to vocab with index
+    # take top-K by frequency (excluding existing specials)
     current_idx = len(vocab)
-    for token, freq in counter.items():
-        if freq >= config.MIN_FREQ and token not in vocab:
-            vocab[token] = current_idx
-            current_idx += 1
+    remaining = max_size - current_idx
+    if remaining <= 0:
+        return vocab
+
+    for token, freq in counter.most_common():
+        if freq < config.MIN_FREQ:
+            break
+        if token in vocab:
+            continue
+        vocab[token] = current_idx
+        current_idx += 1
+        remaining -= 1
+        if remaining <= 0:
+            break
 
     return vocab
 
@@ -98,11 +109,19 @@ def construct_vocab():
 
     print("Building source vocabulary from train split...")
     # build vocab from training data only
-    vocab_src = build_vocab(dataset['train']['src_tokens'], vocab_src)
+    vocab_src = build_vocab(
+        dataset['train']['src_tokens'],
+        vocab_src,
+        max_size=config.MAX_VOCAB_SIZE_SRC,
+    )
     print(f"Source vocab size (including specials): {len(vocab_src)}")
 
     print("Building target vocabulary from train split...")
-    vocab_tgt = build_vocab(dataset['train']['tgt_tokens'], vocab_tgt)
+    vocab_tgt = build_vocab(
+        dataset['train']['tgt_tokens'],
+        vocab_tgt,
+        max_size=config.MAX_VOCAB_SIZE_TGT,
+    )
     print(f"Target vocab size (including specials): {len(vocab_tgt)}")
 
     # save vocab to disk

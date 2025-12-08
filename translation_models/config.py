@@ -63,9 +63,11 @@ EOS_ID = 3
 
 # vocab params
 MIN_FREQ = 10
+MAX_VOCAB_SIZE_SRC = 10000
+MAX_VOCAB_SIZE_TGT = 10000
 
 # dataloader params
-BATCH_SIZE = 64
+BATCH_SIZE = 16
 NUM_WORKERS = 2
 
 # pin_memory True only if CUDA
@@ -76,12 +78,12 @@ DEBUG_MAX_SAMPLES = 64
 DEBUG_MODE = False
 
 # model hyperparams
-EMBED_DIM = 256
-HIDDEN_DIM = 512
+EMBED_DIM = 128
+HIDDEN_DIM = 256
 NUM_LAYERS = 1
 DROPOUT = 0.1
 
 # training hyperparams
-NUM_EPOCHS = 20
+NUM_EPOCHS = 10
 LEARNING_RATE = 1e-3
 TEACHER_FORCING = 1.0  # start with pure teacher forcing
