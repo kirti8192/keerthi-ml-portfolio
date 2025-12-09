@@ -4,6 +4,7 @@ Plot training metrics stored in the metrics directory and save figures to a plot
 CLI flags:
   --local (default): use paths from config.py
   --drive: use a fixed Google Drive root for metrics/plots
+  --model-name: optional filter to only plot a specific model
 """
 
 from pathlib import Path
@@ -16,6 +17,12 @@ import matplotlib.pyplot as plt
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 import config  # noqa: E402
 
+
+def find_metric_files(metrics_dir: Path):
+    """Yield (model_name, path) for each metrics CSV in the directory."""
+    for path in sorted(metrics_dir.glob("*_loss_history.csv")):
+        model_name = path.stem.replace("_loss_history", "")
+        yield model_name, path
 
 
 def load_loss_history(metrics_path: Path):
@@ -37,19 +44,8 @@ def load_loss_history(metrics_path: Path):
 
 
 def plot_losses(epochs, train_losses, dev_losses, save_path: Path):
-    plt.figure(figsize=(8, 5))
-    plt.plot(epochs, train_losses, label="Train Loss", marker="o")
-    plt.plot(epochs, dev_losses, label="Dev Loss", marker="o")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Seq2Seq Loss")
-    plt.grid(True, linestyle="--", alpha=0.4)
-    plt.legend()
-    plt.tight_layout()
-
-    os.makedirs(save_path.parent, exist_ok=True)
-    plt.savefig(save_path, dpi=150)
-    print(f"Saved plot to {save_path}")
+    plt.plot(epochs, train_losses, label="Train Loss", marker="o", linestyle="-")
+    plt.plot(epochs, dev_losses, label="Dev Loss", marker="o", linestyle="--")
 
 
 def resolve_paths(use_drive: bool):
@@ -65,21 +61,46 @@ def resolve_paths(use_drive: bool):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot loss curves from saved metrics.")
-    parser.add_argument("--model-name", default=config.MODEL_NAME, help="Model name prefix for metrics files (default: config.MODEL_NAME).")
+    parser.add_argument("--model-name", help="Optional: only plot this model name (otherwise plot all found).")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--local", action="store_true", help="Use local paths from config.py (default).")
     group.add_argument("--drive", action="store_true", help="Use Google Drive paths for metrics/plots.")
     args = parser.parse_args()
 
-    model_name = args.model_name
     use_drive = args.drive
     metrics_dir, plots_dir = resolve_paths(use_drive)
 
-    metrics_path = metrics_dir / f"{model_name}_loss_history.csv"
-    plot_path = plots_dir / f"{model_name}_loss_curve.png"
+    metric_files = list(find_metric_files(metrics_dir))
+    if args.model_name:
+        metric_files = [(name, path) for name, path in metric_files if name == args.model_name]
 
-    epochs, train_losses, dev_losses = load_loss_history(metrics_path)
-    plot_losses(epochs, train_losses, dev_losses, plot_path)
+    if not metric_files:
+        print(f"No metrics files found in {metrics_dir}")
+        return
+
+    entries = []
+    for name, metrics_path in metric_files:
+        epochs, train_losses, dev_losses = load_loss_history(metrics_path)
+        entries.append((name, epochs, train_losses, dev_losses))
+        print(f"Loaded {name} from {metrics_path}")
+
+    plt.figure(figsize=(8, 5))
+    for name, epochs, train_losses, dev_losses in entries:
+        plt.plot(epochs, train_losses, label=f"{name} (train)", marker="o", linestyle="-")
+        plt.plot(epochs, dev_losses, label=f"{name} (dev)", marker="o", linestyle="--")
+
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Loss")
+    plt.grid(True, linestyle="--", alpha=0.4)
+    plt.legend()
+    plt.tight_layout()
+
+    os.makedirs(plots_dir, exist_ok=True)
+    plot_filename = f"{args.model_name}_loss_curve.png" if args.model_name else "loss_curves.png"
+    plot_path = plots_dir / plot_filename
+    plt.savefig(plot_path, dpi=150)
+    print(f"Saved combined plot to {plot_path}")
 
 
 if __name__ == "__main__":

@@ -117,6 +117,7 @@ def main():
     print("Starting training...")
 
     best_dev_loss = float("inf")
+    epochs_since_improve = 0
     train_history = []
     dev_history = []
     
@@ -155,11 +156,18 @@ def main():
         print(f"  Val Loss: {dev_loss:.4f}")
         dev_history.append(dev_loss)
 
-        # save best model
-        if dev_loss < best_dev_loss:
+        # save best model / early stopping
+        if dev_loss < (best_dev_loss - config.EARLY_STOP_MIN_DELTA):
             best_dev_loss = dev_loss
+            epochs_since_improve = 0
             torch.save(model.state_dict(), checkpoint_path)
             print(f"  Saved best model with Val Loss: {best_dev_loss:.4f}")
+        else:
+            epochs_since_improve += 1
+            print(f"  No improvement for {epochs_since_improve} epoch(s).")
+            if epochs_since_improve >= config.EARLY_STOP_PATIENCE:
+                print(f"Early stopping triggered after {epochs_since_improve} epochs without improvement.")
+                break
 
     # persist loss history
     os.makedirs(config.METRICS_DIR, exist_ok=True)
