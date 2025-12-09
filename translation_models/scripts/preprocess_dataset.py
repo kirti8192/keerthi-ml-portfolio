@@ -16,6 +16,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 # %%
 import config
 from datasets import load_from_disk, DatasetDict
+import unicodedata
 
 # %%
 # load dataset
@@ -30,16 +31,27 @@ def _load_dataset():
 def _normalize_tokenize(example):
     """
     Normalize text by lowercasing and stripping whitespace.
-    Then, tokenize by splitting on whitespace.
+    Then, tokenize by splitting on whitespace and strip all punctuation.
     Language agnostic.
 
     Input: {"src": str, "tgt": str}
     Output: {"src_tokens": List[str], "tgt_tokens": List[str]}
 
     """
+    def strip_punc_from_tokens(tokens):
+        cleaned = []
+        for tok in tokens:
+            stripped = "".join(ch for ch in tok if not unicodedata.category(ch).startswith("P"))
+            if stripped:
+                cleaned.append(stripped)
+        return cleaned
+
+    src_tokens = example["src"].lower().strip().split()
+    tgt_tokens = example["tgt"].lower().strip().split()
+
     return {
-        "src_tokens": example["src"].lower().strip().split(),
-        "tgt_tokens": example["tgt"].lower().strip().split(),
+        "src_tokens": strip_punc_from_tokens(src_tokens),
+        "tgt_tokens": strip_punc_from_tokens(tgt_tokens),
     }
 
 # %% 
