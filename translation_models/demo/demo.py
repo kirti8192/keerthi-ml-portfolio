@@ -150,7 +150,7 @@ def load_model_from_checkpoint(model_name: str, ckpt_path: Path, device: torch.d
 
 
 def find_checkpoints() -> List[Tuple[str, Path]]:
-    base = config.CHECKPOINTS_ROOT / config.LANG_PAIR
+    base = config.CHECKPOINTS_DIR
     checkpoints = []
     for path in base.rglob("*_checkpoint.pth"):
         stem = path.stem
@@ -165,7 +165,7 @@ def main():
 
     checkpoints = find_checkpoints()
     if not checkpoints:
-        print(f"No checkpoints found under {config.CHECKPOINTS_ROOT / config.LANG_PAIR}")
+        print(f"No checkpoints found under {config.CHECKPOINTS_DIR}")
         return
 
     sentence = " ".join(sys.argv[1:]).strip()

@@ -7,20 +7,6 @@ import torch
 # seed
 SEED = 42
 
-# model choice
-MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
-
-# ROOT
-PROJECT_ROOT = Path(__file__).resolve().parent
-
-# Base directories (override with env vars when running on Colab/remote)
-# e.g., export NMT_DATA_ROOT="/content/drive/MyDrive/nmt_en_te"
-#       export NMT_OUTPUTS_ROOT="/content/drive/MyDrive/nmt_en_te_outputs"
-#       export NMT_CHECKPOINTS_ROOT="/content/drive/MyDrive/nmt_en_te_checkpoints"
-DATA_ROOT = Path(os.environ.get("NMT_DATA_ROOT", PROJECT_ROOT / "data"))
-OUTPUTS_ROOT = Path(os.environ.get("NMT_OUTPUTS_ROOT", PROJECT_ROOT / "outputs"))
-CHECKPOINTS_ROOT = Path(os.environ.get("NMT_CHECKPOINTS_ROOT", PROJECT_ROOT / "checkpoints"))
-
 # Language configuration
 # Assamese (as),
 # Bengali (bn),
@@ -37,14 +23,32 @@ LANG_SRC = "en"
 LANG_TGT = "ta"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
+# model choice
+MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
+
+# ROOT
+PROJECT_ROOT = Path(__file__).resolve().parent
+
+# Base directories (override with env vars when running on Colab/remote)
+# e.g., export NMT_DATA_ROOT="/content/drive/MyDrive/nmt_en_te"
+#       export NMT_OUTPUTS_ROOT="/content/drive/MyDrive/nmt_en_te_outputs"
+#       export NMT_CHECKPOINTS_ROOT="/content/drive/MyDrive/nmt_en_te_checkpoints"
+DATA_ROOT = Path(os.environ.get("NMT_DATA_ROOT", PROJECT_ROOT / "data"))
+OUTPUTS_ROOT = Path(os.environ.get("NMT_OUTPUTS_ROOT", PROJECT_ROOT / "outputs"))
+CHECKPOINTS_ROOT = Path(os.environ.get("NMT_CHECKPOINTS_ROOT", PROJECT_ROOT / "checkpoints"))
+
 # Data directories
 DATA_RAW = DATA_ROOT / "raw" / LANG_PAIR
 DATA_PROCESSED = DATA_ROOT / "processed" / LANG_PAIR
 VOCAB_DIR = DATA_ROOT / "vocab" / LANG_PAIR
 DATA_NUM = DATA_ROOT / "numericalized" / LANG_PAIR
-CHECKPOINTS_DIR = CHECKPOINTS_ROOT / LANG_PAIR / MODEL_NAME
-METRICS_DIR = OUTPUTS_ROOT / "metrics" / LANG_PAIR / MODEL_NAME
-PLOTS_DIR = OUTPUTS_ROOT / "plots" / LANG_PAIR / MODEL_NAME
+CHECKPOINTS_DIR = CHECKPOINTS_ROOT / LANG_PAIR
+METRICS_DIR = OUTPUTS_ROOT / "metrics" / LANG_PAIR
+PLOTS_DIR = OUTPUTS_ROOT / "plots" / LANG_PAIR
+
+CHECKPOINT_FILENAME = f"{MODEL_NAME}_checkpoint.pth"
+METRICS_FILENAME = f"{MODEL_NAME}_loss_history.csv"
+PLOT_FILENAME = f"{MODEL_NAME}_loss_curve.png"
 
 # Pre-processing parameters
 MIN_SEQ_LEN = 2
@@ -66,8 +70,8 @@ EOS_ID = 3
 
 # vocab params
 MIN_FREQ = 10
-MAX_VOCAB_SIZE_SRC = 10000
-MAX_VOCAB_SIZE_TGT = 10000
+MAX_VOCAB_SIZE_SRC = 30000
+MAX_VOCAB_SIZE_TGT = 30000
 
 # dataloader params
 BATCH_SIZE = 16

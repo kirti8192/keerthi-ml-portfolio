@@ -55,8 +55,8 @@ def plot_losses(epochs, train_losses, dev_losses, save_path: Path):
 def resolve_paths(use_drive: bool):
     if use_drive:
         drive_root = Path("/Users/kirti8192/Library/CloudStorage/GoogleDrive-kirti8192@gmail.com/My Drive/colab_data/translation_models")
-        metrics_dir = drive_root / "outputs" / "metrics" / config.LANG_PAIR / config.MODEL_NAME
-        plots_dir = drive_root / "outputs" / "plots" / config.LANG_PAIR / config.MODEL_NAME
+        metrics_dir = drive_root / "outputs" / "metrics" / config.LANG_PAIR
+        plots_dir = drive_root / "outputs" / "plots" / config.LANG_PAIR
     else:
         metrics_dir = config.METRICS_DIR
         plots_dir = config.PLOTS_DIR
@@ -65,16 +65,18 @@ def resolve_paths(use_drive: bool):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot loss curves from saved metrics.")
+    parser.add_argument("--model-name", default=config.MODEL_NAME, help="Model name prefix for metrics files (default: config.MODEL_NAME).")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--local", action="store_true", help="Use local paths from config.py (default).")
     group.add_argument("--drive", action="store_true", help="Use Google Drive paths for metrics/plots.")
     args = parser.parse_args()
 
+    model_name = args.model_name
     use_drive = args.drive
     metrics_dir, plots_dir = resolve_paths(use_drive)
 
-    metrics_path = metrics_dir / f"{config.MODEL_NAME}_loss_history.csv"
-    plot_path = plots_dir / f"{config.MODEL_NAME}_loss_curve.png"
+    metrics_path = metrics_dir / f"{model_name}_loss_history.csv"
+    plot_path = plots_dir / f"{model_name}_loss_curve.png"
 
     epochs, train_losses, dev_losses = load_loss_history(metrics_path)
     plot_losses(epochs, train_losses, dev_losses, plot_path)

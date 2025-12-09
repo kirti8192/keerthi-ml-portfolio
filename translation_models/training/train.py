@@ -111,7 +111,7 @@ def main():
 
     # checkpoint directory
     os.makedirs(config.CHECKPOINTS_DIR, exist_ok=True)
-    checkpoint_path = config.CHECKPOINTS_DIR / f"{config.MODEL_NAME}_checkpoint.pth"
+    checkpoint_path = config.CHECKPOINTS_DIR / config.CHECKPOINT_FILENAME
 
     # training loop
     print("Starting training...")
@@ -163,7 +163,7 @@ def main():
 
     # persist loss history
     os.makedirs(config.METRICS_DIR, exist_ok=True)
-    metrics_path = config.METRICS_DIR / f"{config.MODEL_NAME}_loss_history.csv"
+    metrics_path = config.METRICS_DIR / config.METRICS_FILENAME
     with open(metrics_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["epoch", "train_loss", "dev_loss"])
