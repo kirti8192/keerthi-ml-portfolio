@@ -81,7 +81,7 @@ NUM_WORKERS = 2
 PIN_MEMORY = True if torch.cuda.is_available() else False
 
 # debug params
-DEBUG_MAX_SAMPLES = 64
+DEBUG_MAX_SAMPLES = 100000
 DEBUG_MODE = True
 
 # model hyperparams
@@ -91,7 +91,7 @@ NUM_LAYERS = 3
 DROPOUT = 0.2
 
 # training hyperparams
-NUM_EPOCHS = 2
+NUM_EPOCHS = 10
 LEARNING_RATE = 1e-3
 TEACHER_FORCING_START = 1.0  # start with pure teacher forcing
 TEACHER_FORCING_END = 0.1    # decay toward this ratio by final epoch
