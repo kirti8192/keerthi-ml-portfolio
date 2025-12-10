@@ -24,7 +24,7 @@ LANG_TGT = "ta"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # model choice
-MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
+MODEL_NAME = "seq2seq_attn"  # choose: "seq2seq", "seq2seq_attn"
 
 # ROOT
 PROJECT_ROOT = Path(__file__).resolve().parent
