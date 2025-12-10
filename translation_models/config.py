@@ -24,7 +24,7 @@ LANG_TGT = "ta"
 LANG_PAIR = f"{LANG_SRC}-{LANG_TGT}"
 
 # model choice
-MODEL_NAME = "seq2seq_attn"  # choose: "seq2seq", "seq2seq_attn"
+MODEL_NAME = "seq2seq"  # choose: "seq2seq", "seq2seq_attn"
 
 # ROOT
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -91,7 +91,7 @@ NUM_LAYERS = 3
 DROPOUT = 0.2
 
 # training hyperparams
-NUM_EPOCHS = 10
+NUM_EPOCHS = 2
 LEARNING_RATE = 1e-3
 TEACHER_FORCING_START = 1.0  # start with pure teacher forcing
 TEACHER_FORCING_END = 0.1    # decay toward this ratio by final epoch
