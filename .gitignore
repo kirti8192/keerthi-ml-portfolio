@@ -4,4 +4,5 @@ __pycache__/
 translation_models/data/
 translation_models/outputs/
 translation_models/checkpoints/
+translation_models/long_runs/
 *.pth
