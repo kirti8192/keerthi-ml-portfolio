@@ -20,3 +20,14 @@ Multilingual neural machine translation across English, Tamil, and Bengali, focu
 - Training: English-centric fine-tuning followed by back-translation  
 - Evaluation: BLEU (n-gram analysis) and COMET (semantic, human-aligned metric)  
 - Key insight: Back-translation improves cross-lingual transfer even when validation loss does not decrease; MT-specific models remain stable while mBART-50 exhibits target-language drift under heavy back-translation fine-tuning
+
+### [Fantasy League Time-Series Forecasting](https://github.com/kirti8192/fantasy-league-time-series)
+
+Time-series forecasting of fantasy-league player points with an explicit focus on **ranking quality** under heavy zero inflation and temporal dependence.
+
+- Models: Hurdle-based XGBoost (two-stage hurdle classifier + regressor), Temporal Fusion Transformer (TFT), Custom Two-Head TFT (classification + regression)
+- Data: Player-gameweek level historical data across multiple seasons with strict time-based splits
+- Framing: Expected points prediction optimized for ranking rather than point-wise accuracy
+- Techniques: Hurdle modeling for zero inflation, rolling backtests, Optuna-based hyperparameter optimization, custom-built TFT with hurdle-based output head
+- Evaluation: MAE/RMSE for accuracy and Spearman correlation for ranking quality
+- Key insight: Explicitly modeling zero inflation consistently improves player ranking quality; increased model complexity alone does not guarantee better performance though
