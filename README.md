@@ -2,15 +2,6 @@
 
 My machine learning portfolio linking to individual project repositories.
 
-### [Diabetes Prediction Challenge (Kaggle Playground)](https://github.com/kirti8192/kaggle-playground-diabetes-prediction)
-
-Binary classification using gradient boosting models with proper cross-validation and out-of-fold ensembling.
-
-- Models: XGBoost, LightGBM, CatBoost  
-- Validation: Stratified 5-fold CV with OOF predictions 
-- Submission: Ensemble model with weighted predictions
-- Metric: ROC-AUC (private LB: 0.69496)
-
 ### [Neural Machine Translation (Multilingual NMT with Back-Translation)](https://github.com/kirti8192/neural-machine-translation/tree/main)
 
 Multilingual neural machine translation across English, Tamil, and Bengali, focusing on zero-shot transfer and back-translation for zero-resource language pairs.
@@ -31,3 +22,13 @@ Time-series forecasting of fantasy-league player points with an explicit focus o
 - Techniques: Hurdle modeling for zero inflation, rolling backtests, Optuna-based hyperparameter optimization, custom-built TFT with hurdle-based output head
 - Evaluation: MAE/RMSE for accuracy and Spearman correlation for ranking quality
 - Key insight: Explicitly modeling zero inflation consistently improves player ranking quality; increased model complexity alone does not guarantee better performance though
+
+
+### [Diabetes Prediction Challenge (Kaggle Playground)](https://github.com/kirti8192/kaggle-playground-diabetes-prediction)
+
+Binary classification using gradient boosting models with proper cross-validation and out-of-fold ensembling.
+
+- Models: XGBoost, LightGBM, CatBoost  
+- Validation: Stratified 5-fold CV with OOF predictions 
+- Submission: Ensemble model with weighted predictions
+- Metric: ROC-AUC (private LB: 0.69496)
