@@ -2,7 +2,7 @@
 
 My machine learning portfolio linking to individual project repositories.
 
-### [Diffusion Models for Audio Restoration](https://github.com/kirti8192/diffusion-model-audio-restoration.git)
+### [Diffusion Models for Audio Restoration (Perceptual Quality Restoration of Heavily-Quantized Speech Signals](https://github.com/kirti8192/diffusion-model-audio-restoration.git)
 
 Conditional diffusion for **speech restoration from severe bit-depth reduction (4-bit)**, focusing on perceptual quality improvement while remaining faithful to the quantized observation. This is a diffusion model with a U-Net architecture, implemented using the Hugging Face `UNet` module.
 
