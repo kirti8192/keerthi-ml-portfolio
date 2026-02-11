@@ -4,7 +4,7 @@ My machine learning portfolio linking to individual project repositories.
 
 ### [Diffusion Audio Restoration (Low-Bitwidth Speech Dequantization)](https://github.com/kirti8192/diffusion-model-audio-restoration.git)
 
-Conditional diffusion for **speech restoration from severe bit-depth reduction (4-bit)**, focusing on perceptual quality improvement while remaining faithful to the quantized observation.
+Conditional diffusion for **speech restoration from severe bit-depth reduction (4-bit)**, focusing on perceptual quality improvement while remaining faithful to the quantized observation. This is a diffusion model with a U-Net architecture, implemented using the Hugging Face `UNet` module.
 
 - Domain: Complex STFT (2-channel real/imag) with 256×256 patches (`n_fft=512`, `hop=128`)
 - Formulations: conditioned clean diffusion `p(x_clean | x_q)` and residual diffusion `p(r | x_q)` where `r = x_clean - x_q`, `x_hat = x_q + r_hat`
