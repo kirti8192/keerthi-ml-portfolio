@@ -2,6 +2,18 @@
 
 My machine learning portfolio linking to individual project repositories.
 
+### [Diffusion Audio Restoration (Low-Bitwidth Speech Dequantization)](https://github.com/kirti8192/diffusion-model-audio-restoration.git)
+
+Conditional diffusion for **speech restoration from severe bit-depth reduction (4-bit)**, focusing on perceptual quality improvement while remaining faithful to the quantized observation.
+
+- Domain: Complex STFT (2-channel real/imag) using 256×256 time–frequency patches (n_fft=512, hop=128)
+- Formulations: (1) conditioned clean diffusion p(x_clean|x_q), (2) residual diffusion p(r|x_q) with r = x_clean − x_q and x_hat = x_q + r_hat
+- Objective: ε-prediction with magnitude-weighted loss; diffusion timeline truncated to the low-noise regime (~0–10% of T) to better match structured quantization artifacts
+- Inference: SDEdit-style DDIM sampling from x_init = add_noise(x_q, ε, t_start), with t_start controlling correction strength
+- Long-form inference: patch-wise restoration + overlap-averaged STFT stitching + ISTFT for full utterance reconstruction
+- Evaluation: perceptual listening comparisons (x_q → x_hat → x_clean) with anchoring-bias-aware ordering
+- Key insight: STFT-domain conditioning produces clear perceptual gains over time-domain diffusion; residual diffusion shows an unexpected speech-correlated residual that improves clarity even when spectra remain imperfect
+
 ### [Neural Machine Translation (Multilingual NMT with Back-Translation)](https://github.com/kirti8192/neural-machine-translation/tree/main)
 
 Multilingual neural machine translation across English, Tamil, and Bengali, focusing on zero-shot transfer and back-translation for zero-resource language pairs.
